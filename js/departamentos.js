@@ -73,7 +73,14 @@ function criarBotoesAcao() {
     const excluirButton = criarBotao("Excluir");
 
     // Adicionar evento de clique ao botão "Visualizar" para redirecionar para visualizar-departamento.html
-    visualizarButton.addEventListener("click", () => {
+    visualizarButton.addEventListener("click", (event) => {
+
+        const linha = event.target.parentElement.parentElement;
+        const celulas = linha.childNodes;
+        
+        let id = parseInt(celulas[0].innerText);
+        sessionStorage.setItem("idDepartamento", id);
+
         window.location.href = "visualizar-departamento.html";
     });
 

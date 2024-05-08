@@ -77,15 +77,22 @@ function criarBotoesAcao() {
 
         const linha = event.target.parentElement.parentElement;
         const celulas = linha.childNodes;
-        
         let id = parseInt(celulas[0].innerText);
+
         sessionStorage.setItem("idDepartamento", id);
 
         window.location.href = "visualizar-departamento.html";
     });
 
     // Adicionar evento de clique ao botão "Editar" para redirecionar para editar-departamento.html
-    editarButton.addEventListener("click", () => {
+    editarButton.addEventListener("click", (event) => {
+
+        const linha = event.target.parentElement.parentElement;
+        const celulas = linha.childNodes;
+        let id = parseInt(celulas[0].innerText);
+        
+        sessionStorage.setItem("idDepartamento", id);
+
         window.location.href = "editar-departamento.html";
     });
 

@@ -54,7 +54,6 @@ function buscarDepartamento(id) {
 function atualizar() {
 
     // Atualiza os dados do objeto 'departamento' com os valores dos campos de entrada do formulário
-    departamento.id = idInput.value;
     departamento.nome = nomeInput.value.trim();
     departamento.descricao = descricaoInput.value.trim();
 

@@ -26,7 +26,6 @@ function carregarTabela() {
             const td = document.createElement("td");
             td.innerText = celulas[j];
             tr.appendChild(td);
-    
         }
 
         // Criar célula de ação (<td>) contendo os botões de visualizar, editar e excluir
@@ -99,6 +98,9 @@ function criarBotoesAcao() {
     // Adicionar evento de clique ao botão "Excluir"
     excluirButton.addEventListener("click", (event) => {
 
+        const linha = event.target.parentElement.parentElement;
+        excluir(linha);
+
     });
 
     // Adicionar os botões criados à célula (<td>)
@@ -107,6 +109,60 @@ function criarBotoesAcao() {
     td.appendChild(excluirButton);
 
     return td;
+}
+
+/**
+ * Exclui um departamento com base na linha (elemento <tr>) passada como parâmetro.
+ * A função extrai o ID do departamento da primeira célula da linha e busca o índice do departamento no array.
+ * Em seguida, exibe uma mensagem de confirmação e, se confirmado, exclui o departamento do array e do localStorage.
+ * Por fim, remove a linha (elemento <tr>) da tabela HTML.
+ * @param {HTMLElement} linha O elemento <tr> representando a linha do departamento a ser excluído.
+ */
+function excluir(linha) {
+
+    // Extrai o ID do departamento da primeira célula da linha (elemento <tr>)
+    const celulas = linha.childNodes;
+    let idDpto = parseInt(celulas[0].innerText);
+
+    // Obtém a lista de departamentos do localStorage; se não houver dados, usa um array vazio
+    let departamentos = JSON.parse(localStorage.getItem("departamentos")) || [];
+
+    // Busca o índice do departamento a ser excluído no array de departamentos
+    let indiceDptoExcluido = buscarDepartamento(idDpto, departamentos);
+
+    // Exibe uma mensagem de confirmação para excluir o departamento
+    let confirmacao = confirm("Deseja excluir um departamento?");
+
+    // Se o usuário confirmar a exclusão
+    if (confirmacao) {
+
+        // Remove o departamento do array de departamentos utilizando o índice encontrado
+        departamentos.splice(indiceDptoExcluido, 1);
+
+        // Atualiza o localStorage com os departamentos atualizados (sem o departamento excluído)
+        localStorage.setItem("departamentos", JSON.stringify(departamentos));
+
+        // Remove a linha (elemento <tr>) da tabela HTML que representa o departamento excluído
+        linha.remove();
+    }
+}
+
+/**
+ * Busca um departamento por ID em um array de departamentos.
+ * Retorna o índice do departamento encontrado, ou -1 se não encontrado.
+ * @param {number} id O ID do departamento a ser buscado.
+ * @param {Array} departamentos O array de departamentos no qual realizar a busca.
+ * @returns {number} O índice do departamento encontrado no array, ou -1 se não encontrado.
+ */
+function buscarDepartamento(id, departamentos) {
+
+    for (let i = 0; i < departamentos.length; i++) {
+        
+        if (departamentos[i].id == id)
+            return i;
+    }
+
+    return -1;
 }
 
 window.addEventListener("load", () => {
